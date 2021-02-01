@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title></title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
+   <link rel="stylesheet" type="text/css" href="./css/style.css">
+   <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+
+
+</head>
+<body>
+    <div class="swiper-container swiper-container-initialized swiper-container-horizontal">
+    <div class="swiper-wrapper" id="swiper-wrapper-ac287a10cc724aabd" aria-live="polite">
+       <div class="swiper-slide" id="cover">
+          <img src="./img/cover.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke0-1_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page01.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page02.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page03.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke3-4_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page04.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke4-5_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page05.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke5-6_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page06.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke6-7_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page07.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke7-8_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page08.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+          <video src="./img/ke8-9_pro.mp4" preload="auto" muted></video>
+        </div>
+        <div class="swiper-slide">
+          <img src="./img/page09.jpg" alt="">
+        </div>
+        <div class="swiper-slide" id="end">
+          <img src="./img/end.jpg" alt="">
+        </div>
+        <div class="swiper-slide" id="extraslide">
+          <img src="./img/cover.jpg" alt="">
+        </div>
+    </div>
+    <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-ac287a10cc724aabd" aria-disabled="true"></div>
+    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-ac287a10cc724aabd" aria-disabled="false" id="nextbtn"></div>
+    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
+
+<script type="text/javascript">
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    var mySwiper = new Swiper('.swiper-container', {
+    runCallbacksOnInit: true,
+    direction: 'horizontal',
+    effect: 'fade',
+    fadeEffect: {
+      crossFade: true
+    },
+    loop: false,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+
+      on: {
+        transitionStart: function() {
+          var videos = document.querySelectorAll('video');
+          Array.prototype.forEach.call(videos, function(video) {
+            video.pause();
+          });
+        },
+
+        transitionEnd: function() {
+          var activeIndex = this.activeIndex;
+          var activeSlide = document.getElementsByClassName('swiper-slide')[activeIndex];
+          var beforeIndex = Number(activeIndex) - 1;
+          var beforeSlide = document.getElementsByClassName('swiper-slide')[beforeIndex];
+          var beforeSlideVideo = beforeSlide.getElementsByTagName('video')[0];
+          var endbtn = document.getElementById('nextbtn');
+          if(activeIndex == 17) {
+              endbtn.onclick = function() {
+                window.location.reload();
+              }
+          }
+          if (typeof beforeSlideVideo != "undefined" ){
+              var beforeSlideVideoSrc = beforeSlideVideo.getAttribute('src');
+              var judge = beforeSlideVideoSrc.indexOf('re');
+              if(judge != -1) {
+                  beforeSlide.innerHTML = beforeSlide.innerHTML.replace(/re/g,"pro");
+              } else {
+                  beforeSlide.innerHTML = beforeSlide.innerHTML.replace(/pro/g,"re");
+              }
+          }
+          var activeSlideVideo = activeSlide.getElementsByTagName('video')[0];
+          activeSlideVideo.play();
+        },
+
+      }
+});
+});
+</script>
+
+</body></html>
