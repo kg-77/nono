@@ -80,7 +80,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
       on: {
         transitionStart: function() {
           var videos = document.querySelectorAll('video');
-        //移動開始でボタン押せなくする
             button_prev.classList.add('-disable');
             button_next.classList.add('-disable');
           Array.prototype.forEach.call(videos, function(video) {
@@ -93,20 +92,29 @@ window.addEventListener('DOMContentLoaded', (event) => {
           var activeSlide = document.getElementsByClassName('swiper-slide')[activeIndex];
           var beforeIndex = Number(activeIndex) - 1;
           var beforeSlide = document.getElementsByClassName('swiper-slide')[beforeIndex];
+          var afterIndex = Number(activeIndex) + 1;
+          var afterSlide = document.getElementsByClassName('swiper-slide')[afterIndex];
           var endbtn = document.getElementById('nextbtn');
-          console.log(beforeIndex);
           if(activeIndex != 0){
               var beforeSlideVideo = beforeSlide.getElementsByTagName('video')[0];
+              var beforeSlideId = beforeSlide.getAttribute('id');
               var activeSlideVideo = activeSlide.getElementsByTagName('video')[0];
               var activeSlideVideoSrc = activeSlideVideo.getAttribute('src');
+              var activeSlideId = activeSlide.getAttribute('id');
               var judge_re = activeSlideVideoSrc.indexOf('re');
               var judge_pro = activeSlideVideoSrc.indexOf('pro');
               var pagenum = activeSlide.getAttribute('id');
               var connectA_src = activeSlideVideoSrc.replace(/re/g,"pro");
-          var connectB_src = activeSlideVideoSrc.replace(/pro/g,"re"); 
+              var connectB_src = activeSlideVideoSrc.replace(/pro/g,"re"); 
+              if(pagenum != 'end'){
+              var afterSlideVideo = afterSlide.getElementsByTagName('video')[0];
+              if(afterSlideVideo != null) {
+                      var afterSlideVideoSrc = activeSlideVideo.getAttribute('src');
+                  }
+                  var afterSlideId = afterSlide.getAttribute('id');
+              }
           }
-          if(activeIndex === 0){
-              console.log('表紙です');
+          if(activeIndex == 0){
               window.location.reload();
           }
           if(pagenum === 'end') {
@@ -114,40 +122,74 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 window.location.reload();
               }
           }
+        button_next.onclick = function(){
+            console.log('next');
+        }
+        button_prev.onclick = function(){
+            console.log('prev');
+        }
+        
+        if(activeSlideId == 'connectB') {
+            button_prev.onclick = function(){
+                mySwiper.slideTo(beforeIndex);    
+            }
+            button_next.onclick = function(){
+                mySwiper.slideTo(afterIndex);   
+            }
+        }else if(beforeSlideId != 'connectB' && activeSlideId != 'connectB' && document.getElementById('connectB') != null){
+            document.getElementById('connectB').remove();
+            mySwiper.update(); 
+            
+//            button_prev.classList.remove('-disable');
+//            button_next.classList.remove('-disable');
+            if (typeof beforeSlideVideo != "undefined" ){
+              var beforeSlideVideoSrc = beforeSlideVideo.getAttribute('src');
+              var judge = beforeSlideVideoSrc.indexOf('re');
+                if(judge != -1){
+                    mySwiper.slideTo(activeIndex);
+                }
+            }
+        }else {
+                if(judge_pro != -1){
+                button_prev.onclick = function() {
+                   activeSlide.insertAdjacentHTML('beforebegin','<div class="swiper-slide" id="connectB"><video preload="auto" muted></video></div>');
+                    document.getElementById('connectB').firstElementChild.setAttribute('src',connectB_src);
+                    mySwiper.update(); 
+                    mySwiper.slideTo(activeIndex);
+                }
+            }
+      }
+          if (typeof afterSlideVideo != "undefined" ){
+              var judge = afterSlideVideoSrc.indexOf('pro');
+              if(judge != -1) {
+                 
+              } else {
+                 var pro_reSrc = afterSlideVideoSrc.replace(/re/g,"pro");
+                 afterSlideVideo.setAttribute('src',pro_reSrc);
+              }
+          }
           if (typeof beforeSlideVideo != "undefined" ){
               var beforeSlideVideoSrc = beforeSlideVideo.getAttribute('src');
               var judge = beforeSlideVideoSrc.indexOf('re');
               if(judge != -1) {
-                  beforeSlide.innerHTML = beforeSlide.innerHTML.replace(/re/g,"pro");
+                  
               } else {
-                  beforeSlide.innerHTML = beforeSlide.innerHTML.replace(/pro/g,"re");
+                  var re_proSrc = beforeSlideVideoSrc.replace(/pro/g,"re");
+                  beforeSlideVideo.setAttribute('src',re_proSrc);
               }
           }
-//        if(judge_re != -1) {
-//          button_next.onclick = function() {
-//             activeSlide.insertAdjacentHTML('afterend','<div class="swiper-slide" id="connectA"><video preload="auto" muted></video></div>');
-//            document.getElementById('connectA').firstElementChild.setAttribute('src',connectA_src);
-//            mySwiper.update(); 
-//          }  
-//        }
-//        if(judge_pro != -1 && activeSlide.getAttribute('id') != 'connectB') {
-//           button_prev.onclick = function() {
-//               activeSlide.insertAdjacentHTML('beforebegin','<div class="swiper-slide" id="connectB"><video preload="auto" muted></video></div>');
-//                document.getElementById('connectB').firstElementChild.setAttribute('src',connectB_src);
-//                mySwiper.update(); 
-//                mySwiper.slideTo(activeIndex);
-//            }
-//        }
+        
           if(activeIndex != 0) {
               activeSlideVideo.play();
-          }
-          
-          
-        //動画再生後にボタン押せるようにする
-            activeSlideVideo.addEventListener('ended',function(){
+              //動画再生後にボタン押せるようにする
+              activeSlideVideo.addEventListener('ended',function(){
                 button_prev.classList.remove('-disable');
                 button_next.classList.remove('-disable');
-            })
+            });
+          }else {
+              button_prev.classList.remove('-disable');
+              button_next.classList.remove('-disable');
+          }
         },
 
       }
