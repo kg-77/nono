@@ -24,3 +24,12 @@ body {
 .swiper-button-next:after, .swiper-container-rtl .swiper-button-prev:after {
     content: url(../img/arrow_next.png);
 }
+.swiper-button.-disable {
+    pointer-events: none;
+}
+.swiper-button-prev.-disable:after {
+    opacity: 0.2;
+}
+.swiper-button-next.-disable:after {
+    opacity: 0.2;
+}
